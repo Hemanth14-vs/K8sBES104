@@ -30,7 +30,13 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf().disable()
             .authorizeHttpRequests()
-            .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll()
+            .antMatchers(
+                "/auth/**",
+                "/api/products/**",
+                "/api/payments/**",
+                "/back1/api/signup",      // ✅ allow signup
+                "/back1/api/login"        // ✅ allow login (optional)
+            ).permitAll()
             .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -44,7 +50,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
